@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta charset=utf-8>
+  <meta name=description content="">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <title>Nth Fibonnaci Number</title>
+<head>
+<body>
+<div class="container">
+  <h1>Hello World!</h1>
+  <br>
+  <h4><b>Algorithm used: Matrix Exponentiation</b></h4>
+  <br>  
+  <div class="row">
+    <div class="col-sm-4"><h4>Enter number to see nth fibonacci number:</h4></div>
+    <div class="col-sm-4"><input type="text" style="width:100%" id="message" class="form-control" onkeypress="return isNumber(event)"></div>
+    <div class="col-sm-2"><button type="button" class="btn btn-danger sendButton">Submit</button></div>
+  </div>
+  <div class="row">
+  <hr>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+    <h2>Recent Searches</h2>
+    <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Time(in miliseconds)</th>
+        <th>Fibonnaci Value</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+  </div>
+  
+</div>
+
+</body>
+<script>
+$(document).ready(function(){
+    $('.sendButton').attr('disabled',true);
+    $('#message').keyup(function(){
+        if($(this).val().length !=0)
+            $('.sendButton').attr('disabled', false);            
+        else
+            $('.sendButton').attr('disabled',true);
+    })
+});
+
+$( ".sendButton" ).click(function() {
+    var number = $("#message").val();
+//    jQuery.ajaxSetup({async:false});
+//    $.post("/getValue/",{data:number}, function(data,status){
+//        alert(data.time);
+//    console.log("dsd");
+//    $(".table tbody").prepend("<tr><td><b>"+ number +"</b></td><td>"+ data.time +"</td><td>"+ data.value +"</td></tr>");
+//        $('#value').text(data.value);
+//        $('#time').text(data.time);
+
+//    });
+    $.ajax({
+      type: "POST",
+      url: "/getValue/",
+      data: {data:number},
+      dataType: "json",
+      timeout: 500, // in milliseconds
+      success: function(data) {
+        $(".table tbody").prepend("<tr><td><b>"+ number +"</b></td><td>"+ data.time +"</td><td>"+ data.value +"</td></tr>");
+      },
+      error: function(request, status, err) {
+        if(status == "timeout") {
+         $(".table tbody").prepend("<tr><td><b>"+ number +"</b></td><td></td><td><b>"+ "Function didn't return in 1 sec" +"</b></td></tr>");
+        }
+      },
+//      async: false
+    });
+    console.log("yes");
+    $("#message").val(''); 
+    $(".sendButton").attr('disabled', "disabled");
+    return true;
+});
+
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+</script>
+</html>
+	
