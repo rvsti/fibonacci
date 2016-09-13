@@ -4,6 +4,5 @@ enum34==1.1.6
 macht==0.1.5
 protobuf==2.6.1
 six==1.10.0
-vboxapi==1.0
 wcwidth==0.1.6
 wheel==0.26.0
